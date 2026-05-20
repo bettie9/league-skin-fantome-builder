@@ -1,0 +1,1045 @@
+global proc shelf_lemon3d_General () {
+    global string $gBuffStr;
+    global string $gBuffStr0;
+    global string $gBuffStr1;
+
+
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Add the file to the current scene" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Import..." 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "IMP" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/import.png" 
+        -image1 "lemon3d/import.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "Import" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Export entire scene (including contents of all references) into one file" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Export All..." 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "EXP" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/export.png" 
+        -image1 "lemon3d/export.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "Export" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Delete all history." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Delete all history" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "His" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/delete.png" 
+        -image1 "lemon3d/delete.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "DeleteAllHistory;\nprint \"Deleted all history.\"" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Delete all channels" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Delete all channels" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Chan" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/delete.png" 
+        -image1 "lemon3d/delete.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "DeleteAllChannels;\nprint \"Deleted all channels.\"" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Add a temporary namespace to selected objects." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Add fake namespace" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Add" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/namespace.png" 
+        -image1 "lemon3d/namespace.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\nselected = cmds.ls(sl = True)\nnodes = []\nfor item in selected:\n    nodes.append(item)\n    des = cmds.listRelatives(item, ad=True)\n    if des:\n        nodes += des\nfor node in nodes:\n    old = node\n    if 'Fnp_' not in old:\n        new = 'Fnp_' + old\n        try:\n            cmds.rename(old, new)\n        except:\n            pass\n\nMGlobal.displayInfo('Added fake namespace.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Remove namespace on selected objects." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Remove namespace" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Del" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/namespace.png" 
+        -image1 "lemon3d/namespace.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\nselected = cmds.ls(sl = True)\nnodes = []\nfor item in selected:\n    nodes.append(item)\n    des = cmds.listRelatives(item, ad=True)\n    if des:\n        nodes += des\nfor node in nodes:\n    old = node\n    if 'Fnp_' in old:\n        new = old.replace('Fnp_', '')\n        try:\n            cmds.rename(old, new)\n        except:\n            pass\n    elif ':' in old:\n        new = old.split(':')[1]\n        try:\n            cmds.rename(old, new)\n        except:\n            pass\n\nMGlobal.displayInfo('Removed all namespace.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Group the selected object(s)." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Group" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Grp" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/group.png" 
+        -image1 "lemon3d/group.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "doGroup 0 1 1" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Ungroup the selected object(s)." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Ungroup" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "UnGrp" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/ungroup.png" 
+        -image1 "lemon3d/ungroup.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "ungroup" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Display and edit connections in shading networks" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Hypershade" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Mat" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/hypershade.png" 
+        -image1 "lemon3d/hypershade.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "HypershadeWindow" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Delete unused materials." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Hypershade Delete unused node" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Del" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/hypershade.png" 
+        -image1 "lemon3d/hypershade.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "MLdeleteUnused;\nprint \"Deleted unused nodeds in hypershade.\"" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Separate selected mesh by materials." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Separate mesh by materials" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "sepMat" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/separated_mesh.png" 
+        -image1 "lemon3d/separated_mesh.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\ndef getSGsFromShape(shape):\n  myShapeNode=cmds.listRelatives(shape, shapes=1, children=1)\n  shadingEngines = []\n  if cmds.objExists(shape):\n    dest=cmds.listConnections(myShapeNode[0], \n        source=False, \n        plugs=False, \n        destination=True, \n        type=\"shadingEngine\")\n    if len(dest):\n        select=cmds.ls(sl=1)\n        cmds.select(dest, r=1, ne=1)\n        shadingEngines=cmds.ls(sl=1)\n        cmds.select(select, r=1)\n    return shadingEngines\n\ndef sepMat(object):\n    shadingGroups=getSGsFromShape(object)\n    ParentName=(\"group_\"+object)\n    cmds.group(empty=1, n=ParentName)\n    i=0\n    while 1:\n        if not ( i<len(shadingGroups) ):\n            break\n        \n        material=cmds.ls(cmds.listConnections(shadingGroups[i]), materials=True)[0]\n        clone=('mesh_' + material)\n        cmds.duplicate(object, n=clone)\n        cmds.parent(clone, ParentName)\n        cmds.select(clone)\n        cmds.ConvertSelectionToFaces()\n        tempset=str(cmds.sets())\n        tempgrps=cmds.listConnections(material, type='shadingEngine')\n        cmds.select(cmds.sets(tempgrps[0], int=tempset))\n        cmds.InvertSelection()\n        cmds.delete()\n        cmds.delete(tempset)\n        print(f'Separated: {material}')\n        \n        i=i + 1\n\t\n    cmds.delete(object)\n\ncmd = cmds.confirmDialog(\n  title = 'Separted mesh by materials',\n  message = 'This function does not support skinCluster, all your weights will be lost after use this. Continue?',\n  button = ['Yes','No'],\n  defaultButton = 'Yes',\n  cancelButton = 'No'\n)\nif cmd == 'Yes':\n  selection=cmds.ls(sl=1)\n  sepMat(selection[0])\n  MGlobal.displayInfo('Separated mesh by materials.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Fix shared vertices on all meshes in scene." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Disconnect all material" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "shared" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/fix_shared_vertices.png" 
+        -image1 "lemon3d/fix_shared_vertices.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import *\nfrom maya.OpenMayaAnim import *\n\ncmd = cmds.confirmDialog(\n  title = 'Fix all shared vertices',\n  message = 'This function does not support skinCluster, all your weights will be lost after use this. Continue?',\n  button = ['Yes','No'],\n  defaultButton = 'Yes',\n  cancelButton = 'No'\n)\nif cmd == 'Yes':\n    iterator = MItDag(MItDag.kDepthFirst, MFn.kMesh)\n    while not iterator.isDone():\n        mesh_dagpath = MDagPath()\n        iterator.getPath(mesh_dagpath)\n        mesh = MFnMesh(mesh_dagpath)\n\n        # get shader/materials\n        shaders = MObjectArray()\n        face_shader = MIntArray()\n        instance = mesh_dagpath.instanceNumber() if mesh_dagpath.isInstanced() else 0\n        mesh.getConnectedShaders(instance, shaders, face_shader)\n        shader_count = shaders.length()\n        if shader_count < 1:\n            iterator.next()\n            continue\n\n        # extract all shared vertices first\n        face_count = face_shader.length()\n        map_faces = []\n        for i in range(0, shader_count):\n            map_faces.append(MIntArray())\n        for i in range(0, face_count):\n            map_faces[face_shader[i]].append(i)\n\n        for i in range(0, shader_count-1):\n            component = MFnSingleIndexedComponent()\n            face_component = component.create(\n                MFn.kMeshPolygonComponent)\n            component.addElements(map_faces[i])\n            selections = MSelectionList()\n            selections.add(mesh_dagpath, face_component)\n            MGlobal.selectCommand(selections)\n            MGlobal.executeCommand(\n                'polyChipOff -ch 1 -kft 1 -dup 0 -off 0')\n        iterator.next()\n    MGlobal.executeCommand('select -cl')\n    MGlobal.executeCommand('DeleteAllHistory')\n    MGlobal.displayInfo('Fixed all shared vertices.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Display face normals on selected objects." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Face Normals" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "normal" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/display_normals.png" 
+        -image1 "lemon3d/display_normals.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "ToggleFaceNormalDisplay" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Make normals of all selected faces point in a consistent direction. (Unify normals)" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Conform" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Uni" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/unify_normals.png" 
+        -image1 "lemon3d/unify_normals.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "ConformPolygonNormals" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Reverse the normals of the selected faces." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Reverse" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Rev" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/reverse_normals.png" 
+        -image1 "lemon3d/reverse_normals.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "ReversePolygonNormals" 
+        -sourceType "mel" 
+        -doubleClickCommand "ReversePolygonNormalsOptions" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Read and load textures from skinx.bin." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Import textures" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "IMP" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/texture.png" 
+        -image1 "lemon3d/texture.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\nimport os.path\nfrom LtMAO import lepath, pyRitoFile, Ritoddstex, hash_helper\n\ndef set_render_settings():\n    # render with depth peeling\n    cmds.setAttr('hardwareRenderingGlobals.transparencyAlgorithm', 3)\n\n    # set smooth shade + texture on\n    for view_panes in cmds.getPanel(type='modelPanel'):\n        if cmds.modelEditor(view_panes, query=True, activeView=True):\n            cmds.modelEditor(view_panes, edit=True, displayAppearance='smoothShaded')\n            cmds.modelEditor(view_panes, edit=True, displayTextures=True)\n            break\n\n\ndef create_ui_materials_import():\n    ui_values = {\n        'materials_bin': '',\n        'wad_folder': ''\n    }\n\n    def ui_cmd():\n        cmds.columnLayout()\n\n        cmds.rowLayout(numberOfColumns=3, adjustableColumn=3)\n        cmds.text(label='Skin BIN:')\n        materials_bin_text = cmds.text(label='', align='left', width=600)\n        def materialsbin_browse(e):\n            materials_bin = cmds.fileDialog2(\n                dialogStyle=2, \n                fileMode=1,\n                fileFilter='BIN(*.bin)',\n                caption='Select Skin BIN',\n                okCaption='Select'\n            )\n            if materials_bin:\n                materials_bin = materials_bin[0].replace('\\\\', '/')\n                cmds.text(materials_bin_text, edit=True, label=materials_bin)\n                ui_values['materials_bin'] = materials_bin\n        cmds.button(label='Browse Skin BIN', command=materialsbin_browse)\n        cmds.setParent('..')\n\n        cmds.rowLayout(numberOfColumns=3, adjustableColumn=3)\n        cmds.text(label='WAD Folder:')\n        wad_folder_text = cmds.text(label='', align='left', width=600)\n        def wadfolder_browse(e):\n            wad_folder = cmds.fileDialog2(\n                dialogStyle=2, \n                fileMode=3,\n                caption='Select WAD Folder',\n                okCaption='Select'\n            )\n            if wad_folder:\n                wad_folder = wad_folder[0].replace('\\\\', '/')\n                cmds.text(wad_folder_text, edit=True, label=wad_folder)\n                ui_values['wad_folder'] = wad_folder\n        cmds.button(label='Browse WAD Folder', command=wadfolder_browse)\n        cmds.setParent('..')\n\n        cmds.rowLayout(numberOfColumns=2)\n        cmds.text(label='', w=700)\n        def dismiss(result):\n            cmds.layoutDialog(dismiss=result)\n        cmds.button(label='Import', width=100, command=lambda e: dismiss('Import'))\n    \n    return cmds.layoutDialog(title='Import Materials', ui=ui_cmd), ui_values\n\ndef parse_read_materials(bin):\n    materials = {}\n    # first run to get main_texture and material link\n    for entry in bin.entries:\n        if entry.type == hash_helper.Storage.bin_hashes['SkinCharacterDataProperties']:\n            skinMeshPropertiess = entry.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['skinMeshProperties'])  \n            if len(skinMeshPropertiess) > 0:\n                skinMeshProperties = skinMeshPropertiess[0]\n                textures = skinMeshProperties.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['texture'])    \n                if len(textures) > 0:\n                    materials['main_texture'] = textures[0].data\n\n                materialOverrides = skinMeshProperties.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['materialOverride'])    \n                if len(materialOverrides) > 0:\n                    materialOverride = materialOverrides[0]\n                    for SkinMeshDataProperties_MaterialOverride in materialOverride.data:\n                        material = SkinMeshDataProperties_MaterialOverride.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['material'])            \n                        submesh = SkinMeshDataProperties_MaterialOverride.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['submesh'])\n                        if len(material) > 0 and len(submesh) > 0:\n                            materials[submesh[0].data] = material[0].data\n            break\n    # second run to get material texture from material link\n    for material, texture in materials.items():\n        if material != 'main_texture': \n            StaticMaterialDefs = bin.get_items(\n                lambda entry: entry.hash == texture and entry.type == hash_helper.Storage.bin_hashes['StaticMaterialDef']\n            )   \n            if len(StaticMaterialDefs) > 0:\n                StaticMaterialDef = StaticMaterialDefs[0]\n                samplerValuess = StaticMaterialDef.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['samplerValues'])\n                if len(samplerValuess) > 0:\n                    samplerValues = samplerValuess[0]\n                    for StaticMaterialShaderSamplerDef in samplerValues.data:\n                        textureNames = StaticMaterialShaderSamplerDef.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['textureName'])            \n                        texturePaths = StaticMaterialShaderSamplerDef.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['texturePath'])\n                        if len(textureNames) > 0 and len(texturePaths) > 0:\n                            if textureNames[0].data in ('DiffuseTexture', 'Diffuse_Texture'):\n                                materials[material] = texturePaths[0].data\n    return materials\n\ndef update_read_materials(materials, wad_folder):\n    materials2 = {}\n    for material, texture in materials.items():\n        texture = lepath.join(wad_folder, texture)\n        # tex to dds \n        if texture.endswith('.tex') and os.path.exists(texture):\n            dds = texture.replace('.tex', '.dds')\n            Ritoddstex.tex2dds(texture, dds)\n            texture = dds\n        material = material.replace('/', '__')\n        materials2[material] = texture\n    return materials2\n\ndef load_materials(materials):\n    # load main texture first\n    scene_materials = []\n    meshes=cmds.ls(sl=True, dag=True, s=True)\n    if meshes != None and len(meshes)>0:\n        scope=cmds.listConnections(meshes, type ='shadingEngine')\n        if scope != None:\n            for shading_engine in scope:\n                if cmds.sets(shading_engine, q=True):\n                    for material in cmds.ls(cmds.listConnections(shading_engine), materials=True):\n                        if material not in scene_materials:\n                            scene_materials.append(material)\n    if len(scene_materials) == 0:\n        raise Exception('Please select a skin group.')\n    main_texture = 'main_texture'\n    # create file + p2d node\n    cmds.shadingNode(\n        'file',\n        name=f'{main_texture}_file',\n        asTexture=True,\n        isColorManaged=True\n    )\n    cmds.shadingNode(\n        'place2dTexture',\n        asUtility=True,\n        name=f'{main_texture}_p2d'\n    )\n    # link stuffs\n    cmds.setAttr(\n        f'{main_texture}_file.fileTextureName',\n        materials['main_texture'],\n        type='string'\n    )\n    attributes = [\n        'coverage',\n        'translateFrame',\n        'rotateFrame',\n        'mirrorU',\n        'mirrorV',\n        'stagger',\n        'wrapU',\n        'wrapV',\n        'repeatUV',\n        'offset',\n        'rotateUV',\n        'noiseUV',\n        'vertexUvOne',\n        'vertexUvTwo',\n        'vertexUvThree',\n        'vertexCameraOne'\n    ]\n    for attribute in attributes:\n        cmds.connectAttr(\n            f'{main_texture}_p2d.{attribute}',\n            f'{main_texture}_file.{attribute}',\n            force=True\n        )\n    cmds.connectAttr(\n        f'{main_texture}_p2d.outUV',\n        f'{main_texture}_file.uv',\n        force=True\n    )\n    cmds.connectAttr(\n        f'{main_texture}_p2d.outUvFilterSize',\n        f'{main_texture}_file.uvFilterSize',\n        force=True\n    )\n    # connect texture depend on material type\n    for scene_material in scene_materials:\n        if cmds.nodeType(scene_material) == 'standardSurface':\n            # set specular to 0\n            cmds.setAttr(f'{scene_material}.specular', 0)\n            cmds.connectAttr(\n                f'{main_texture}_file.outColor',\n                f'{scene_material}.baseColor',\n                force=True\n            )\n        else:\n            cmds.connectAttr(\n                f'{main_texture}_file.outColor',\n                f'{scene_material}.color',\n                force=True\n            )\n    # load other material\n    for material, texture in materials.items():\n        if material not in scene_materials:\n            continue\n        # create file + p2d node\n        cmds.shadingNode(\n            'file',\n            name=f'{material}_file',\n            asTexture=True,\n            isColorManaged=True\n        )\n        cmds.shadingNode(\n            'place2dTexture',\n            asUtility=True,\n            name=f'{material}_p2d'\n        )\n        # link stuffs\n        cmds.setAttr(\n            f'{material}_file.fileTextureName',\n            texture,\n            type='string'\n        )\n        attributes = [\n            'coverage',\n            'translateFrame',\n            'rotateFrame',\n            'mirrorU',\n            'mirrorV',\n            'stagger',\n            'wrapU',\n            'wrapV',\n            'repeatUV',\n            'offset',\n            'rotateUV',\n            'noiseUV',\n            'vertexUvOne',\n            'vertexUvTwo',\n            'vertexUvThree',\n            'vertexCameraOne'\n        ]\n        for attribute in attributes:\n            cmds.connectAttr(\n                f'{material}_p2d.{attribute}',\n                f'{material}_file.{attribute}',\n                force=True\n            )\n        cmds.connectAttr(\n            f'{material}_p2d.outUV',\n            f'{material}_file.uv',\n            force=True\n        )\n        cmds.connectAttr(\n            f'{material}_p2d.outUvFilterSize',\n            f'{material}_file.uvFilterSize',\n            force=True\n        )\n        # connect texture depend on material type\n        if cmds.nodeType(material) == 'standardSurface':\n            # set specular to 0\n            cmds.setAttr(f'{material}.specular', 0)\n            cmds.connectAttr(\n                f'{material}_file.outColor',\n                f'{material}.baseColor',\n                force=True\n            )\n        else:\n            cmds.connectAttr(\n                f'{material}_file.outColor',\n                f'{material}.color',\n                force=True\n            )\n                \ndef read_and_load():\n    dismiss, ui_values = create_ui_materials_import()\n    if dismiss == 'Import':\n        wad_folder = ui_values['wad_folder']\n        materials_bin = ui_values['materials_bin']\n        if wad_folder == '' or materials_bin == '':\n            return\n        # pase the bin\n        materials = parse_read_materials(pyRitoFile.bin.BIN().read(materials_bin))\n        # update material, texture to match maya/wad folder\n        materials = update_read_materials(materials, wad_folder)\n        # load materials in maya\n        load_materials(materials)\n        # set render\n        set_render_settings()\n        MGlobal.displayInfo(f'Finish: Load materials.')\n        \nread_and_load()" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Open UV Editor." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "UV editor" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "UV" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/uv_editor.png" 
+        -image1 "lemon3d/uv_editor.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "TextureViewWindow" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Moves selected uv to top left corner and makes it half the size." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "UV Top Left" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "UL" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/uv_up_left.png" 
+        -image1 "lemon3d/uv_up_left.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "polyEditUV -pu 0.5 -pv 0.5 -su 0.5 -sv 0.5;\npolyEditUV -u -0.25 -v 0.25 ;\nprint \"Moved UV -> Top Left\"" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Moves selected uv to top right corner and makes it half the size." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "UV Top Right" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "UR" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/uv_up_right.png" 
+        -image1 "lemon3d/uv_up_right.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "polyEditUV -pu 0.5 -pv 0.5 -su 0.5 -sv 0.5;\npolyEditUV -u 0.25 -v 0.25 ;\nprint \"Moved UV -> Top Right\"" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Moves selected uv to bottom left corner and makes it half the size." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "UV Bottom Left" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "DL" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/uv_down_left.png" 
+        -image1 "lemon3d/uv_down_left.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "polyEditUV -pu 0.5 -pv 0.5 -su 0.5 -sv 0.5;\npolyEditUV -u -0.25 -v -0.25 ;\nprint \"Moved UV -> Bottom Left\"" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Moves selected uv to bottom right corner and makes it half the size." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "UV Bottom Right" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "DR" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/uv_down_right.png" 
+        -image1 "lemon3d/uv_down_right.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "polyEditUV -pu 0.5 -pv 0.5 -su 0.5 -sv 0.5;\npolyEditUV -u 0.25 -v -0.25 ;\nprint \"Moved UV -> Bottom Right\"" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Go to bind pose." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Go to bindPose" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "GO" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/go_bind_pose.png" 
+        -image1 "lemon3d/go_bind_pose.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "GoToBindPose;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Set current pose as bind pose." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Set bindPose" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "SET" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/set_bind_pose.png" 
+        -image1 "lemon3d/set_bind_pose.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\nbps = cmds.dagPose(q=True, bp=True)\nif bps and len(bps) > 0:\n    joints = cmds.dagPose(bps[0], q=True, m=True)\n    for j in joints:\n        cmds.dagPose(j, rs=True, name=bps[0])\n            \nMGlobal.displayInfo('Updated bindpose.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Freeze selected joints rotation." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Freeze selected joints rotation" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "SEL" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/freeze_joint.png" 
+        -image1 "lemon3d/freeze_joint.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya.OpenMaya import *\nfrom maya.OpenMayaAnim import *\n\nselections = MSelectionList()\nMGlobal.getActiveSelectionList(selections)\niterator = MItSelectionList(selections, MFn.kJoint)\nwhile not iterator.isDone():\n    dagpath = MDagPath()\n    iterator.getDagPath(dagpath)\n    ik_joint = MFnIkJoint(dagpath)\n    rotation = MQuaternion()\n    orient = MQuaternion()\n    ik_joint.getOrientation(orient)\n    ik_joint.getRotation(rotation, MSpace.kTransform)\n    orient = rotation * orient\n    ik_joint.setOrientation(orient)\n    ik_joint.setRotation(orient.identity)\n    iterator.next()\n\nMGlobal.displayInfo('Froze selected joints.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Freeze all joint rotations." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Freeze all joints rotation" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "ALL" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/freeze_joint.png" 
+        -image1 "lemon3d/freeze_joint.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya.OpenMaya import *\nfrom maya.OpenMayaAnim import *\n\niterator = MItDag(MItDag.kDepthFirst, MFn.kJoint)\nwhile not iterator.isDone():\n    dagpath = MDagPath()\n    iterator.getPath(dagpath)\n    ik_joint = MFnIkJoint(dagpath)\n    rotation = MQuaternion()\n    orient = MQuaternion()\n    ik_joint.getOrientation(orient)\n    ik_joint.getRotation(rotation, MSpace.kTransform)\n    orient = rotation * orient\n    ik_joint.setOrientation(orient)\n    ik_joint.setRotation(orient.identity)\n    iterator.next()\n\nMGlobal.displayInfo('Froze all joints.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Open Tool settings + enter paint weight mode." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Paint skin weights" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "WEI" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/paint_weight.png" 
+        -image1 "lemon3d/paint_weight.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "ToolSettingsWindow;\nArtPaintSkinWeightsTool;" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Unbind, delete history, rebind on a selected skin cluster." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Rebind" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "RE" 
+        -overlayLabelColor 0.725962 0.725962 0.725962 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/rebind.png" 
+        -image1 "lemon3d/rebind.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya.OpenMaya import *\nfrom maya.OpenMayaAnim import *\n\ncmd = MGlobal.executeCommandStringResult(\n  'confirmDialog -title \"Rebind skinned mesh with same vertex id\" -message \"Please backup/save scene first because this function might not work as expect. Continue?\" -button \"Yes\" -button \"No\" -defaultButton \"Yes\" -cancelButton \"No\"'\n)\nif cmd == 'Yes':\n    # get mesh in selections\n    selections = MSelectionList()\n    MGlobal.getActiveSelectionList(selections)\n    iterator = MItSelectionList(selections, MFn.kMesh)\n    if iterator.isDone():\n        raise Exception(f'Please select a mesh.')\n    mesh_dagpath = MDagPath()\n    iterator.getDagPath(mesh_dagpath)  # get first mesh\n    iterator.next()\n    if not iterator.isDone():\n        raise Exception(\n            f'More than 1 mesh selected., combine all meshes if you have mutiple meshes.')\n    mesh = MFnMesh(mesh_dagpath)\n    mesh_name = mesh.name()\n\n    # find skin cluster\n    iterator = MItDependencyGraph(\n        mesh.object(), MFn.kSkinClusterFilter, MItDependencyGraph.kUpstream)\n    if iterator.isDone():\n        raise Exception('Failed to find skin cluster.')\n    skin_cluster = MFnSkinCluster(iterator.currentItem())\n\n    # get weights\n    component = MFnSingleIndexedComponent()\n    vertex_component = component.create(MFn.kMeshVertComponent)\n    weights = MDoubleArray()\n    util = MScriptUtil()\n    ptr = util.asUintPtr()\n    skin_cluster.getWeights(mesh_dagpath, vertex_component, weights, ptr)\n\n    # get influence\n    influences_dagpath = MDagPathArray()\n    skin_cluster.influenceObjects(influences_dagpath)\n    influence_count = influences_dagpath.length()\n\n    # unbind\n    MGlobal.executeCommand(f'skinCluster -e  -ubk {mesh_name}')\n    MGlobal.executeCommand('DeleteHistory')\n\n    # rebind\n    selections = MSelectionList()\n    selections.add(mesh_dagpath)\n    for i in range(0, influence_count):\n        selections.add(influences_dagpath[i])\n    MGlobal.selectCommand(selections)\n    MGlobal.executeCommand(f'skinCluster -mi 4 -tsb -n {mesh_name}_skinCluster')\n\n    # get created skincluster\n    iterator = MItDependencyGraph(\n        mesh.object(), MFn.kSkinClusterFilter, MItDependencyGraph.kUpstream)\n    if iterator.isDone():\n        raise Exception('Failed to find created skin cluster.')\n    skin_cluster = MFnSkinCluster(iterator.currentItem())\n\n    # get influences mask (influences indices)\n    new_influences_dagpath = MDagPathArray()\n    skin_cluster.influenceObjects(new_influences_dagpath)\n    mask_influence = MIntArray(influence_count)\n    for i in range(0, influence_count):\n        for j in range(0, influence_count):\n            if new_influences_dagpath[i] == influences_dagpath[j]:\n                mask_influence[i] = j\n                break\n\n    # set weights\n    MGlobal.executeCommand(f'setAttr {mesh_name}_skinCluster.normalizeWeights 0')\n    skin_cluster.setWeights(mesh_dagpath, vertex_component,\n                            mask_influence, weights, False)\n    MGlobal.executeCommand(f'setAttr {mesh_name}_skinCluster.normalizeWeights 1')\n    MGlobal.executeCommand(\n        f'skinPercent -normalize true {mesh_name}_skinCluster {mesh_name}')\n\n    MGlobal.displayInfo('Rebound.')\n" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+
+} 

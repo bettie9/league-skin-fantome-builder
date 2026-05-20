@@ -1,0 +1,1101 @@
+global proc shelf_lemon3d_Mapgeo () {
+    global string $gBuffStr;
+    global string $gBuffStr0;
+    global string $gBuffStr1;
+
+
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Add the file to the current scene" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Import..." 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "IMP" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/import.png" 
+        -image1 "lemon3d/import.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "Import" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Export entire scene (including contents of all references) into one file" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Export All..." 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "EXP" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/export.png" 
+        -image1 "lemon3d/export.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "Export" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Delete all history." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Delete all history" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "His" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/delete.png" 
+        -image1 "lemon3d/delete.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "DeleteAllHistory;\nprint \"Deleted all history.\"" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Rename selected objects." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Rename objects" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "ReN" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/rename_objects.png" 
+        -image1 "lemon3d/rename_objects.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\ndef on_textfield(textfield):\n    cmds.optionVar(sv=('lemon3d_prefixrename', cmds.textField(textfield, q=True, tx=True)))\n\n\nif cmds.window('PREFIXRENAME', ex=True):\n    cmds.deleteUI('PREFIXRENAME')\n\nwindow = cmds.window(\n    \"PREFIXRENAME\", \n    title = 'Rename object: Enter prefix:', \n    sizeable = False\n)\n\nlayout = cmds.rowLayout (p = window, nc = 2)\ntextfield = cmds.textField(p = layout, w = 500, h = 30)\nold_str = cmds.optionVar(q='lemon3d_prefixrename')\nif old_str:\n    cmds.textField(textfield, e=True, it = old_str)\ncmds.textField(textfield, e = True, cc = lambda c: on_textfield(textfield))\ndef apply(*args):\n    prefix = cmds.textField(textfield, q = True, tx=True)\n    if prefix: \n        selected = cmds.ls(sl = True)\n        i = 0\n        for obj in selected: \n            try: \n                cmds.rename(obj, f'{prefix}_{i}')\n                i += 1\n            except:\n                pass\n\n        MGlobal.displayInfo('Renamed selected objects.')\n\ncmds.textField(textfield, edit = True, ec = apply)\ncmds.button('Apply', p = layout, w = 100, h = 30, c = apply)\n\ncmds.showWindow(window)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Rename path of selected objects." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Rename paths of objects" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "ReP" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/rename_paths.png" 
+        -image1 "lemon3d/rename_paths.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\nif cmds.window('MATRenameWin', ex=True):\n    cmds.deleteUI('MATRenameWin')\n\nwindow = cmds.window(\n    'MATRenameWin', \n    title = 'Rename path of objects: Enter prefix:', \n    sizeable = False\n)\n\nlayout = cmds.rowLayout (p = window, nc = 2)\ntextfield = cmds.textField(p = layout, w = 500, h = 30)\nold_str = cmds.optionVar(q='lemon3d_matrename')\nif old_str:\n    cmds.textField(textfield, e=True, it = old_str)\n\ndef apply(*args):\n    path = cmds.textField(textfield, q = True, tx=True)\n    if path:\n        cmds.optionVar(sv=('lemon3d_matrename', path))\n        path = path.replace('\\\\', '/')\n        path = path.replace('/', '__')\n        if not path.endswith('__'):\n            path += '__'\n        selected = cmds.ls(sl = True)\n        for obj in selected: \n            try: \n                old = obj\n                new = path + old.split('__')[-1]\n                cmds.rename(old, new)\n            except:\n                pass\n\n        MGlobal.displayInfo('Renamed selected objects.')\n\ncmds.textField(textfield, edit = True, ec = apply)\ncmds.button('Apply', p = layout, w = 100, h = 30, c = apply)\n\ncmds.showWindow(window)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Create 8 layers and assign selected object to all layers." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Create 8 layers" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "All" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/layer.png" 
+        -image1 "lemon3d/layer.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\nfor i in range(1, 9):\n    if not cmds.objExists(f'set{i}'):\n        cmds.sets(name=f'set{i}')\n    else:\n        cmds.sets(addElement=f'set{i}')\n\nMGlobal.displayInfo('Created 8 sets.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Remove selected objects from all layers." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Remove from all layers" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "None" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/layer.png" 
+        -image1 "lemon3d/layer.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\nfor i in range(1, 9):\n    if cmds.objExists(f'set{i}'):\n        cmds.sets(remove=f'set{i}')\n\nMGlobal.displayInfo('Removed selected from all sets.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Assign/remove selected objects to layer 1." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Layer 1" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "1" 
+        -overlayLabelColor 1 1 1 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/layer.png" 
+        -image1 "lemon3d/layer.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\ni = 1\nif not cmds.objExists(f'set{i}'):\n    cmds.sets(name=f'set{i}')\nelse:\n    if cmds.sets(im=f'set{i}'):\n        cmds.sets(remove=f'set{i}')\n        MGlobal.displayInfo('Removed selected from set{i}.')\n    else:\n        cmds.sets(addElement=f'set{i}')\n        MGlobal.displayInfo('Assigned selected to set{i}.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Assign/remove selected objects to layer 2." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Layer 2" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "2" 
+        -overlayLabelColor 1 0.1332 0 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/layer.png" 
+        -image1 "lemon3d/layer.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\ni = 2\nif not cmds.objExists(f'set{i}'):\n    cmds.sets(name=f'set{i}')\nelse:\n    if cmds.sets(im=f'set{i}'):\n        cmds.sets(remove=f'set{i}')\n        MGlobal.displayInfo('Removed selected from set{i}.')\n    else:\n        cmds.sets(addElement=f'set{i}')\n        MGlobal.displayInfo('Assigned selected to set{i}.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Assign/remove selected objects to layer 3." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Layer 3" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "3" 
+        -overlayLabelColor 1 0.6667 0 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/layer.png" 
+        -image1 "lemon3d/layer.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\ni = 3\nif not cmds.objExists(f'set{i}'):\n    cmds.sets(name=f'set{i}')\nelse:\n    if cmds.sets(im=f'set{i}'):\n        cmds.sets(remove=f'set{i}')\n        MGlobal.displayInfo('Removed selected from set{i}.')\n    else:\n        cmds.sets(addElement=f'set{i}')\n        MGlobal.displayInfo('Assigned selected to set{i}.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Assign/remove selected objects to layer 4." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Layer 4" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "4" 
+        -overlayLabelColor 0 0.6041 1 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/layer.png" 
+        -image1 "lemon3d/layer.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\ni = 4\nif not cmds.objExists(f'set{i}'):\n    cmds.sets(name=f'set{i}')\nelse:\n    if cmds.sets(im=f'set{i}'):\n        cmds.sets(remove=f'set{i}')\n        MGlobal.displayInfo('Removed selected from set{i}.')\n    else:\n        cmds.sets(addElement=f'set{i}')\n        MGlobal.displayInfo('Assigned selected to set{i}.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Assign/remove selected objects to layer 5." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Layer 5" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "5" 
+        -overlayLabelColor 0 1 0.6979 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/layer.png" 
+        -image1 "lemon3d/layer.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\ni = 5\nif not cmds.objExists(f'set{i}'):\n    cmds.sets(name=f'set{i}')\nelse:\n    if cmds.sets(im=f'set{i}'):\n        cmds.sets(remove=f'set{i}')\n        MGlobal.displayInfo('Removed selected from set{i}.')\n    else:\n        cmds.sets(addElement=f'set{i}')\n        MGlobal.displayInfo('Assigned selected to set{i}.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Assign/remove selected objects to layer 6." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Layer 6" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "6" 
+        -overlayLabelColor 0 0.9639 1 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/layer.png" 
+        -image1 "lemon3d/layer.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\ni = 6\nif not cmds.objExists(f'set{i}'):\n    cmds.sets(name=f'set{i}')\nelse:\n    if cmds.sets(im=f'set{i}'):\n        cmds.sets(remove=f'set{i}')\n        MGlobal.displayInfo('Removed selected from set{i}.')\n    else:\n        cmds.sets(addElement=f'set{i}')\n        MGlobal.displayInfo('Assigned selected to set{i}.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Assign/remove selected objects to layer 7." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Layer 7" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "7" 
+        -overlayLabelColor 0.0231 1 0 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/layer.png" 
+        -image1 "lemon3d/layer.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\ni = 7\nif not cmds.objExists(f'set{i}'):\n    cmds.sets(name=f'set{i}')\nelse:\n    if cmds.sets(im=f'set{i}'):\n        cmds.sets(remove=f'set{i}')\n        MGlobal.displayInfo('Removed selected from set{i}.')\n    else:\n        cmds.sets(addElement=f'set{i}')\n        MGlobal.displayInfo('Assigned selected to set{i}.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Assign/remove selected objects to layer 8." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Layer 8" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "8" 
+        -overlayLabelColor 0.539 0.539 0.539 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/layer.png" 
+        -image1 "lemon3d/layer.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\ni = 8\nif not cmds.objExists(f'set{i}'):\n    cmds.sets(name=f'set{i}')\nelse:\n    if cmds.sets(im=f'set{i}'):\n        cmds.sets(remove=f'set{i}')\n        MGlobal.displayInfo('Removed selected from set{i}.')\n    else:\n        cmds.sets(addElement=f'set{i}')\n        MGlobal.displayInfo('Assigned selected to set{i}.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Assign/remove selected objects to setBushes." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Bush" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Bush" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/bush.png" 
+        -image1 "lemon3d/bush.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\nif not cmds.objExists(f'setBushes'):\n    cmds.sets(name=f'setBushes')\n    MGlobal.displayInfo('Created setBushes.')\nelse:\n    if cmds.sets(im=f'setBushes'):\n        cmds.sets(remove=f'setBushes')\n        MGlobal.displayInfo('Removed selected from setBushes.')\n    else:\n        cmds.sets(addElement=f'setBushes')\n        MGlobal.displayInfo('Assigned selected to setBushes.')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Show and edit mapgeo mesh info." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Edit mesh info" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "INFO" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/mesh_info.png" 
+        -image1 "lemon3d/mesh_info.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\n\ndef create_ui_mapgeo_model_info(transform_name, mesh_name, mesh_materials, layers, is_bush, render_flags, bucket_grid_hash):\n    def ui_cmd():\n        cmds.columnLayout()\n        cmds.rowColumnLayout(numberOfColumns = 2, width = 800)\n\n        cmds.text(label = 'Mesh name:', width = 150, height = 30)\n        cmds.text(label = mesh_name, width = 650, height = 30)\n\n        cmds.text(label = 'Materials:', width = 150, height = 30)\n        cmds.columnLayout(height = 30)\n        for material in mesh_materials:\n            cmds.text(material, width = 650)\n        cmds.setParent('..')\n        cmds.text(label = 'Layer:', width = 150, height = 30)\n        cmds.rowLayout(numberOfColumns = 8, height = 30)\n        layers_checkbox = [None] * 8\n        for i in range(8):\n            layers_checkbox[i] = cmds.checkBox(label = f'{i+1}', value = layers[i])\n        cmds.setParent('..')\n\n        cmds.text(label = 'Is bush:', width = 150, height = 30)\n        bush_checkbox = cmds.checkBox(label = 'Yes', height = 30, value = is_bush)\n\n        cmds.text(label = 'Render flags:', width = 150, height = 30)\n        render_flags_intfield = cmds.intField(minValue = 0, maxValue = 255, step = 1, value = render_flags)\n\n        cmds.text(label = 'Bucket grid hash:', width = 150, height = 30)\n        cmds.rowLayout(numberOfColumns = 2, height = 30)\n        option_items  =  {\n            'f4968631': 'Enable on Baron Base',\n            'c11c84e8': 'Enable on Baron Walled',\n            '1b3399aa': 'Enable on Baron Tunnel',\n            '68fe7644': 'Enable on Baron Upgraded',\n            'd1a17399': 'Enable on Dragon Infernal',\n            '9f32344a': 'Enable on Dragon Infernal',\n            'e94a0c8c': 'Enable on Dragon Mountain',\n            '48106271': 'Enable on Dragon Mountain',\n            '84543212': 'Enable on Dragon Ocean',\n            '3c5b24f7': 'Enable on Dragon Ocean',\n            '8c67e893': 'Enable on Dragon Cloud',\n            '4f0b2a3e': 'Enable on Dragon Cloud',\n            '86fb6b5b': 'Enable on Dragon Hextech',\n            '2b8dbdee': 'Enable on Dragon Hextech',\n            '8e6a128e': 'Enable on Dragon Chemtech',\n            '189a3295': 'Enable on Dragon Chemtech',\n            '7acdec29': 'Enable on Athakhan Top',\n            'd5adc7f7': 'Enable on Athakhan Bottom',\n\n            '00000000': 'Base Default',\n            '21d36b37': 'Disable on Baron Tunnel',\n            '3ea0f6af': 'Disable on Dragon Mountain, Hextech, Chemtech',\n            '5e652742': 'Disable on Dragon Infernal, Mountain, Ocean, Cloud, Hextech, Chemtech',\n            '6f187e01': 'Disable on Dragon Infernal, Hextech, Chemtech',\n            '72a6d263': 'Disable on Dragon Ocean',\n            '789a0ddf': 'Disable on Dragon Infernal, Hextech, Chemtech',\n            '7af438ae': 'Disable on Dragon Infernal',\n            '8b933f10': 'Disable on Dragon Infernal',\n            'a7b30f31': 'Disable on Baron Base, Baron Upgraded',\n            '0c210e40': 'Disable on Dragon Mountain',\n            '98689027': 'Disable on Dragon Mountain, Infernal',\n        }\n        buckethash_field = cmds.textField(width = 400, text = bucket_grid_hash)\n        option_menu = cmds.optionMenu(width = 250)\n        for item, desc in option_items.items():\n            cmds.menuItem(label = f'{item} ({desc})')\n        if bucket_grid_hash in option_items:\n            value_to_set = f'{bucket_grid_hash} ({option_items[bucket_grid_hash]})'\n        else:\n            value_to_set = f'00000000 (Base Default)'\n        def option_menu_change(v):\n            cmds.textField(buckethash_field, edit = True, text = v.split(' ')[0])\n        cmds.optionMenu(option_menu, edit = True, value = value_to_set, changeCommand=option_menu_change)\n        cmds.setParent('..')\n\n        cmds.setParent('..')\n        def dismiss(result):\n            layers = [False] * 8\n            for i in range(8):\n                layers[i] = cmds.checkBox(layers_checkbox[i], query=True, value=True)\n                if layers[i]: \n                    if not cmds.sets(transform_name, isMember = f'set{i+1}'):\n                        cmds.sets(transform_name, addElement = f'set{i+1}')\n                else:\n                    if cmds.sets(transform_name, isMember = f'set{i+1}'):\n                        cmds.sets(transform_name, remove = f'set{i+1}')\n\n            is_bush = cmds.checkBox(bush_checkbox, query=True, value=True)\n            if is_bush: \n                if not cmds.sets(transform_name, isMember = 'setBushes'):\n                    cmds.sets(transform_name, addElement = 'setBushes')\n            else:\n                if cmds.sets(transform_name, isMember = 'setBushes'):\n                    cmds.sets(transform_name, remove = 'setBushes')\n\n            render_flags = cmds.intField(render_flags_intfield, query=True, value=True)\n            if not cmds.attributeQuery(\n                'renderflags',\n                exists=True,\n                node=transform_name\n            ):\n                cmds.addAttr(\n                    transform_name,\n                    longName='renderflags',\n                    niceName='Render Flags',\n                    attributeType='byte'\n                )\n            cmds.setAttr(f'{transform_name}.renderflags', render_flags)\n\n            bucket_grid_hash = cmds.textField(buckethash_field, query=True, text=True)\n            if not cmds.attributeQuery(\n                'buckethash',\n                exists=True,\n                node=transform_name\n            ):\n                cmds.addAttr(\n                    transform_name,\n                    longName='buckethash',\n                    niceName='Bucket Hash',\n                    dataType='string'\n                )\n            cmds.setAttr(f'{transform_name}.buckethash', bucket_grid_hash, type='string')\n\n\n            cmds.layoutDialog(dismiss = result)\n        cmds.rowLayout(numberOfColumns = 2)\n        cmds.text(label = '', w = 700)\n        cmds.button(label = 'Apply', width = 100, height = 30, align = 'right', command = lambda e: dismiss('Apply'))\n        cmds.setParent('..')\n    \n    return cmds.layoutDialog(title = 'Mapgeo mesh info', ui = ui_cmd)\n\n\nmeshes = cmds.ls(selection = True, dagObjects = True, shapes = True)\nif meshes:\n    mesh_name = meshes[0]\n    transform_name = cmds.listRelatives(mesh_name, parent=True)[0]\n    scope = cmds.listConnections(mesh_name, type = 'shadingEngine')\n    mesh_materials = []\n    if scope:\n        for shading_engine in scope:\n            if cmds.sets(shading_engine, query = True):\n                mesh_materials += cmds.ls(cmds.listConnections(shading_engine), materials = True)\n        mesh_materials = list(set(mesh_materials))   \n    \n    layers = [False] * 8\n    for i in range(8):\n        layers[i] = cmds.sets(transform_name, isMember = f'set{i+1}')\n    is_bush = cmds.sets(transform_name, isMember = 'setBushes')\n\n    render_flags = 0\n    try:\n        if cmds.attributeQuery(\n            'renderflags',\n            exists=True,\n            node=transform_name\n        ):\n            render_flags = cmds.getAttr(f'{transform_name}.renderflags')\n    except:\n        pass\n\n    bucket_grid_hash = '00000000'\n    try:\n        if cmds.attributeQuery(\n            'buckethash',\n            exists=True,\n            node=transform_name\n        ):\n            bucket_grid_hash = cmds.getAttr(f'{transform_name}.buckethash')\n    except:\n        pass\n    create_ui_mapgeo_model_info(transform_name, mesh_name, mesh_materials, layers, is_bush, render_flags, bucket_grid_hash)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Select all meshes that has non-zero bucket hash value." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Select non-zero bucket hash meshes" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "SelBH" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/baron.png" 
+        -image1 "lemon3d/baron.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\n\ntransforms = cmds.ls(transforms = True)\nif transforms:\n    to_selected = []\n    for tranform in transforms:\n        mesh = cmds.listRelatives(tranform, shapes=True)\n        if mesh:\n            try:\n                if cmds.attributeQuery(\n                    'buckethash',\n                    exists=True,\n                    node=tranform\n                ):\n                   bucket_grid_hash = cmds.getAttr(f'{tranform}.buckethash')\n                   if bucket_grid_hash != '00000000':\n                    to_selected.append(tranform)\n            except:\n                pass\n    if len(to_selected) > 0:\n        cmds.select(to_selected)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Display and edit connections in shading networks" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Hypershade" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Mat" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/hypershade.png" 
+        -image1 "lemon3d/hypershade.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "HypershadeWindow" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Delete unused materials." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Hypershade Delete unused node" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Del" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/hypershade.png" 
+        -image1 "lemon3d/hypershade.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "MLdeleteUnused;\nprint \"Deleted unused nodeds in hypershade.\"" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Select all faces that have same material of selected face." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Select connected material faces" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "SelMat" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/find.png" 
+        -image1 "lemon3d/find.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya.OpenMaya import *\n\nmesh_components=[]\nselections = MSelectionList()\nMGlobal.getActiveSelectionList(selections)\niterator = MItSelectionList(selections)\nwhile not iterator.isDone():\n    if iterator.hasComponents():\n        component=MObject()\n        mesh_dagpath = MDagPath()\n        iterator.getDagPath(mesh_dagpath,component)\n        mesh_components.append((\n            mesh_dagpath,component\n        ))\n    iterator.next()\n\nres_selections = MSelectionList()\nfor mesh_dagpath,component in mesh_components:\n    mesh=MFnMesh(mesh_dagpath)\n    # get shader/materials\n    shaders = MObjectArray()\n    face_shader = MIntArray()\n    instance = mesh_dagpath.instanceNumber() if mesh_dagpath.isInstanced() else 0\n    mesh.getConnectedShaders(instance, shaders, face_shader)\n    shader_count = shaders.length()\n    # check no material assigned\n    if shader_count < 1:\n        continue\n    spread_faces=MIntArray()\n    face_count=face_shader.length()\n    iterator=MItMeshPolygon(mesh_dagpath,component)\n    iterator.reset()\n    while not iterator.isDone():\n        selected_face=iterator.index()\n        selected_shader=face_shader[selected_face]\n        for i in range(face_count):\n            if face_shader[i]==selected_shader:\n                if i not in spread_faces:\n                    spread_faces.append(i)\n        iterator.next()\n    component2 = MFnSingleIndexedComponent()\n    face_component = component2.create(\n        MFn.kMeshPolygonComponent)\n    component2.addElements(spread_faces)\n    res_selections.add(mesh_dagpath, face_component)\n\nMGlobal.selectCommand(res_selections)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Fix shared vertices of all meshes in scene." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Fix shared vertices" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "shared" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/fix_shared_vertices.png" 
+        -image1 "lemon3d/fix_shared_vertices.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "\nfrom maya.OpenMaya import *\nfrom maya.OpenMayaAnim import *\n\niterator = MItDag(MItDag.kDepthFirst, MFn.kMesh)\nwhile not iterator.isDone():\n    mesh_dagpath = MDagPath()\n    iterator.getPath(mesh_dagpath)\n    mesh = MFnMesh(mesh_dagpath)\n\n    # get shader/materials\n    shaders = MObjectArray()\n    face_shader = MIntArray()\n    instance = mesh_dagpath.instanceNumber() if mesh_dagpath.isInstanced() else 0\n    mesh.getConnectedShaders(instance, shaders, face_shader)\n    shader_count = shaders.length()\n    if shader_count < 1:\n        iterator.next()\n        continue\n\n    # extract all shared vertices first\n    face_count = face_shader.length()\n    map_faces = []\n    for i in range(0, shader_count):\n        map_faces.append(MIntArray())\n    for i in range(0, face_count):\n        map_faces[face_shader[i]].append(i)\n\n    for i in range(0, shader_count-1):\n        component = MFnSingleIndexedComponent()\n        face_component = component.create(\n            MFn.kMeshPolygonComponent)\n        component.addElements(map_faces[i])\n        selections = MSelectionList()\n        selections.add(mesh_dagpath, face_component)\n        MGlobal.selectCommand(selections)\n        MGlobal.executeCommand(\n            'polyChipOff -ch 1 -kft 1 -dup 0 -off 0')\n    iterator.next()\nMGlobal.executeCommand('select -cl')\nMGlobal.executeCommand('DeleteAllHistory')\nMGlobal.executeCommand('confirmDialog -message \"Fixed all shared vertices.\" -button \"Ok\" -defaultButton \"Ok\" -cancelButton \"Ok\"')\n" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Read and load textures from materials.bin." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Import materials" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "IMP" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/texture.png" 
+        -image1 "lemon3d/texture.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\nimport os.path\nfrom LtMAO import lepath, pyRitoFile, Ritoddstex, hash_helper\n\ndef set_render_settings():\n    # render with depth peeling\n    cmds.setAttr('hardwareRenderingGlobals.transparencyAlgorithm', 3)\n\n    # set smooth shade + texture on\n    for view_panes in cmds.getPanel(type='modelPanel'):\n        if cmds.modelEditor(view_panes, query=True, activeView=True):\n            cmds.modelEditor(view_panes, edit=True, displayAppearance='smoothShaded')\n            cmds.modelEditor(view_panes, edit=True, displayTextures=True)\n            break\n\n\ndef create_ui_materials_import():\n    ui_values = {\n        'materials_bin': '',\n        'wad_folder': ''\n    }\n\n    def ui_cmd():\n        cmds.columnLayout()\n\n        cmds.rowLayout(numberOfColumns=3, adjustableColumn=3)\n        cmds.text(label='Materials BIN:')\n        materials_bin_text = cmds.text(label='', align='left', width=600)\n        def materialsbin_browse(e):\n            materials_bin = cmds.fileDialog2(\n                dialogStyle=2, \n                fileMode=1,\n                fileFilter='BIN(*.bin)',\n                caption='Select Materials BIN',\n                okCaption='Select'\n            )\n            if materials_bin:\n                materials_bin = materials_bin[0].replace('\\\\', '/')\n                cmds.text(materials_bin_text, edit=True, label=materials_bin)\n                ui_values['materials_bin'] = materials_bin\n        cmds.button(label='Browse Materials BIN', command=materialsbin_browse)\n        cmds.setParent('..')\n\n        cmds.rowLayout(numberOfColumns=3, adjustableColumn=3)\n        cmds.text(label='WAD Folder:')\n        wad_folder_text = cmds.text(label='', align='left', width=600)\n        def wadfolder_browse(e):\n            wad_folder = cmds.fileDialog2(\n                dialogStyle=2, \n                fileMode=3,\n                caption='Select WAD Folder',\n                okCaption='Select'\n            )\n            if wad_folder:\n                wad_folder = wad_folder[0].replace('\\\\', '/')\n                cmds.text(wad_folder_text, edit=True, label=wad_folder)\n                ui_values['wad_folder'] = wad_folder\n        cmds.button(label='Browse WAD Folder', command=wadfolder_browse)\n        cmds.setParent('..')\n\n        cmds.rowLayout(numberOfColumns=2)\n        cmds.text(label='', w=700)\n        def dismiss(result):\n            cmds.layoutDialog(dismiss=result)\n        cmds.button(label='Import', width=100, command=lambda e: dismiss('Import'))\n    \n    return cmds.layoutDialog(title='Import Materials', ui=ui_cmd), ui_values\n\ndef parse_read_materials(bin):\n    materials = {}\n    for entries in bin.entries:\n        if entries.type == hash_helper.Storage.bin_hashes['StaticMaterialDef']:\n            names = entries.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['name'])            \n            samplerValuess = entries.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['samplerValues'])\n            if len(names) > 0 and len(samplerValuess) > 0:\n                for StaticMaterialShaderSamplerDef in samplerValuess[0].data:\n                    textureNames = StaticMaterialShaderSamplerDef.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['textureName'])            \n                    texturePaths = StaticMaterialShaderSamplerDef.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['texturePath'])\n                    if len(textureNames) > 0 and len(texturePaths) > 0:\n                        if textureNames[0].data in ('DiffuseTexture', 'Diffuse_Texture'):\n                            materials[names[0].data] = texturePaths[0].data\n    return materials\n\ndef update_read_materials(materials, wad_folder):\n    materials2 = {}\n    for material, texture in materials.items():\n        texture = lepath.join(wad_folder, texture)\n        # tex to dds \n        if texture.endswith('.tex') and os.path.exists(texture):\n            dds = texture.replace('.tex', '.dds')\n            Ritoddstex.tex2dds(texture, dds)\n            texture = dds\n        material = material.replace('/', '__')\n        materials2[material] = texture\n    return materials2\n\ndef load_materials(materials):\n    for material, texture in materials.items():\n        if not cmds.objExists(material):\n            continue\n        # create file + p2d node\n        cmds.shadingNode(\n            'file',\n            name=f'{material}_file',\n            asTexture=True,\n            isColorManaged=True\n        )\n        cmds.shadingNode(\n            'place2dTexture',\n            asUtility=True,\n            name=f'{material}_p2d'\n        )\n        # link stuffs\n        cmds.setAttr(\n            f'{material}_file.fileTextureName',\n            texture,\n            type='string'\n        )\n        attributes = [\n            'coverage',\n            'translateFrame',\n            'rotateFrame',\n            'mirrorU',\n            'mirrorV',\n            'stagger',\n            'wrapU',\n            'wrapV',\n            'repeatUV',\n            'offset',\n            'rotateUV',\n            'noiseUV',\n            'vertexUvOne',\n            'vertexUvTwo',\n            'vertexUvThree',\n            'vertexCameraOne'\n        ]\n        for attribute in attributes:\n            cmds.connectAttr(\n                f'{material}_p2d.{attribute}',\n                f'{material}_file.{attribute}',\n                force=True\n            )\n        cmds.connectAttr(\n            f'{material}_p2d.outUV',\n            f'{material}_file.uv',\n            force=True\n        )\n        cmds.connectAttr(\n            f'{material}_p2d.outUvFilterSize',\n            f'{material}_file.uvFilterSize',\n            force=True\n        )\n        # connect texture depend on material type\n        if cmds.nodeType(material) == 'standardSurface':\n            # set specular to 0\n            cmds.setAttr(f'{material}.specular', 0)\n            cmds.connectAttr(\n                f'{material}_file.outColor',\n                f'{material}.baseColor',\n                force=True\n            )\n        else:\n            cmds.connectAttr(\n                f'{material}_file.outColor',\n                f'{material}.color',\n                force=True\n            )\n                \ndef read_and_load():\n    dismiss, ui_values = create_ui_materials_import()\n    if dismiss == 'Import':\n        wad_folder = ui_values['wad_folder']\n        materials_bin = ui_values['materials_bin']\n        if wad_folder == '' or materials_bin == '':\n            return\n        # pase the bin\n        materials = parse_read_materials(pyRitoFile.bin.BIN().read(materials_bin))\n        # update material, texture to match maya/wad folder\n        materials = update_read_materials(materials, wad_folder)\n        # load materials in maya\n        load_materials(materials)\n        # set render\n        set_render_settings()\n        MGlobal.displayInfo(f'Finish: Load {len(materials)} materials.')\n        \nread_and_load()" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Export and append all materials to materials.bin." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Export materials" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "EXP" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/texture.png" 
+        -image1 "lemon3d/texture.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\nimport os.path\nfrom LtMAO import pyRitoFile, Ritoddstex, hash_helper\n\ndef create_ui_material_export():\n    ui_values = {\n        'materials_bin': '',\n        'map_name': ''\n    }\n\n    def ui_cmd():\n        cmds.columnLayout()\n\n        cmds.rowLayout(numberOfColumns=3, adjustableColumn=3)\n        cmds.text(label='Texture path: ASSETS/Maps/KitPieces/')\n        map_name = cmds.textField(width=500)\n        cmds.text(label='/Textures/*.dds')\n        cmds.setParent('..')\n\n        cmds.rowLayout(numberOfColumns=3, adjustableColumn=3)\n        cmds.text(label='Materials BIN:')\n        materials_bin_text = cmds.text(label='', align='left', width=600)\n        def materialsbin_browse(e):\n            materials_bin = cmds.fileDialog2(\n                dialogStyle=2, \n                fileMode=1,\n                fileFilter='BIN(*.bin)',\n                caption='Select Materials BIN',\n                okCaption='Select'\n            )\n            if materials_bin:\n                materials_bin = materials_bin[0].replace('\\\\', '/')\n                cmds.text(materials_bin_text, edit=True, label=materials_bin)\n                ui_values['materials_bin'] = materials_bin\n        cmds.button(label='Browse Materials BIN', command=materialsbin_browse)\n        cmds.setParent('..')\n\n        cmds.rowLayout(numberOfColumns=2)\n        cmds.text(label='', w=700)\n        def dismiss(result):\n            ui_values['map_name'] = cmds.textField(map_name, query=True, text=True)\n            cmds.layoutDialog(dismiss=result)\n        cmds.button(label='Export', width=100, command=lambda e: dismiss('Export'))\n    \n    return cmds.layoutDialog(title='Export Materials', ui=ui_cmd), ui_values\n\ndef parse_write_materials(materials, bin):\n    entries = []\n    for entry in bin.entries:\n        duped = False\n        for material, texture in materials.items():\n            if hash_helper.Storage.bin_hashes[material] == entry.hash:\n                duped = True\n                break\n        if not duped:\n            entries.append(entry)\n    for material, texture in materials.items():\n        StaticMaterialDef = pyRitoFile.bin.BINEntry(\n            hash = material, type = 'StaticMaterialDef',\n            data = [\n                pyRitoFile.bin.BINField(\n                    hash = 'name',\n                    type = pyRitoFile.bin.BINType.STRING,\n                    data = material\n                ),\n                pyRitoFile.bin.BINField(\n                    hash = 'type',\n                    type = pyRitoFile.bin.BINType.U32,\n                    data = 0\n                ),\n                pyRitoFile.bin.BINField(\n                    hash = 'defaultTechnique',\n                    type = pyRitoFile.bin.BINType.STRING,\n                    data = 'normal'\n                ),\n                pyRitoFile.bin.BINField(\n                    hash = 'samplerValues',\n                    type = pyRitoFile.bin.BINType.LIST2,\n                    value_type = pyRitoFile.bin.BINType.EMBED,\n                    data = [\n                        pyRitoFile.bin.BINField(\n                            hash = None,\n                            type = pyRitoFile.bin.BINType.EMBED,\n                            hash_type = 'StaticMaterialShaderSamplerDef',\n                            data = [\n                                pyRitoFile.bin.BINField(\n                                    hash = 'samplerName',\n                                    type = pyRitoFile.bin.BINType.STRING, \n                                    data = 'DiffuseTexture'\n                                ),\n                                pyRitoFile.bin.BINField(\n                                    hash = 'textureName',\n                                    type = pyRitoFile.bin.BINType.STRING,\n                                    data = texture\n                                ),\n                                pyRitoFile.bin.BINField(\n                                    hash = 'addressU',\n                                    type = pyRitoFile.bin.BINType.U32,\n                                    data = 1\n                                )\n                            ]\n                        )\n                    ]\n                ),\n                pyRitoFile.bin.BINField(\n                    hash = 'switches',\n                    type =  pyRitoFile.bin.BINType.LIST2,\n                    value_type = pyRitoFile.bin.BINType.EMBED,\n                    data = [\n                        pyRitoFile.bin.BINField(\n                            hash = None,\n                            type =  pyRitoFile.bin.BINType.EMBED,\n                            hash_type = 'StaticMaterialSwitchDef',\n                            data = [\n                                pyRitoFile.bin.BINField(\n                                    hash = 'name',\n                                    type =  pyRitoFile.bin.BINType.STRING,\n                                    data = 'MASK_FX_IN_MAP_CENTER'\n                                ),\n                                pyRitoFile.bin.BINField(\n                                    hash = 'on',\n                                    type =  pyRitoFile.bin.BINType.BOOL,\n                                    data = False\n                                )\n                            ]\n                        )\n                    ]\n                ),\n                pyRitoFile.bin.BINField(\n                    hash = 'shaderMacros',\n                    type =  pyRitoFile.bin.BINType.MAP,\n                    key_type = pyRitoFile.bin.BINType.STRING,\n                    value_type = pyRitoFile.bin.BINType.STRING,\n                    data = {\n                        'NO_BAKED_LIGHTING': '1',\n                        'DISABLE_DEPTH_FOG': '1',\n                        'PREMULTIPLIED_ALPHA': '1'\n                    }\n                ),\n                pyRitoFile.bin.BINField(\n                    hash = 'techniques',\n                    type =  pyRitoFile.bin.BINType.LIST,\n                    value_type = pyRitoFile.bin.BINType.EMBED,\n                    data = [\n                        pyRitoFile.bin.BINField(\n                            hash = None,\n                            type =  pyRitoFile.bin.BINType.EMBED,\n                            hash_type = 'StaticMaterialTechniqueDef',\n                            data = [\n                                pyRitoFile.bin.BINField(\n                                    hash = 'name',\n                                    type =  pyRitoFile.bin.BINType.STRING,\n                                    data = 'normal'\n                                ),\n                                pyRitoFile.bin.BINField(\n                                    hash = 'passes',\n                                    type =  pyRitoFile.bin.BINType.LIST,\n                                    value_type = pyRitoFile.bin.BINType.EMBED,\n                                    data = [\n                                        pyRitoFile.bin.BINField(\n                                            hash = None,\n                                            type =  pyRitoFile.bin.BINType.EMBED,\n                                            hash_type = 'StaticMaterialPassDef',\n                                            data = [\n                                                pyRitoFile.bin.BINField(\n                                                    hash = 'shader',\n                                                    type =  pyRitoFile.bin.BINType.LINK,\n                                                    data = 'Shaders/StaticMesh/SRX_Blend_Master'\n                                                ),\n                                                pyRitoFile.bin.BINField(\n                                                    hash = 'cullEnable',\n                                                    type =  pyRitoFile.bin.BINType.BOOL,\n                                                    data = False\n                                                )\n                                            ]\n                                        )\n                                    ]\n                                )\n                            ]\n                        )\n                    ]\n                ),\n                pyRitoFile.bin.BINField(\n                    hash = 'childTechniques',\n                    type =  pyRitoFile.bin.BINType.LIST,\n                    value_type = pyRitoFile.bin.BINType.EMBED,\n                    data = [\n                        pyRitoFile.bin.BINField(\n                            hash = None,\n                            type =  pyRitoFile.bin.BINType.EMBED,\n                            hash_type = 'StaticMaterialChildTechniqueDef',\n                            data = [\n                                pyRitoFile.bin.BINField(\n                                    hash = 'name',\n                                    type =  pyRitoFile.bin.BINType.STRING,\n                                    data = 'env_transition'\n                                ),\n                                pyRitoFile.bin.BINField(\n                                    hash = 'parentName',\n                                    type =  pyRitoFile.bin.BINType.STRING,\n                                    data = 'normal'\n                                ),\n                                pyRitoFile.bin.BINField(\n                                    hash = 'shaderMacros',\n                                    type =  pyRitoFile.bin.BINType.MAP,\n                                    key_type = pyRitoFile.bin.BINType.STRING,\n                                    value_type = pyRitoFile.bin.BINType.STRING,\n                                    data = {\n                                        'ENV_TRANSITION': '1'\n                                    }\n                                )\n                            ]\n                        )\n                    ]\n                )\n            ]\n        )\n        entries.append(StaticMaterialDef)\n    bin.entries = entries\n\ndef update_write_materials(materials, map_name):\n    materials2 = {}\n    for material, texture in materials.items():\n        material = material.replace('__', '/')\n        texture = f'ASSETS/Maps/KitPieces/{map_name}/Textures/{os.path.basename(texture)}'\n        materials2[material] = texture\n    return materials2\n\ndef dump_materials():\n    materials = {}\n    meshes=cmds.ls(sl=True, dag=True, s=True)\n    if meshes != None and len(meshes)>0:\n        scope=cmds.listConnections(meshes, type ='shadingEngine')\n    else:\n        scope=cmds.ls(type='shadingEngine')\n    if scope != None:\n        list_materials_in_scene = []\n        for shading_engine in scope:\n            if cmds.sets(shading_engine, q=True):\n                list_materials_in_scene += cmds.ls(cmds.listConnections(shading_engine), materials=True)\n        for material in list_materials_in_scene:\n            if material in materials:\n                continue\n            # list file depend on material type\n            if cmds.nodeType(material) == 'standardSurface':\n                material_file = cmds.listConnections(f'{material}.baseColor', type='file')\n            else:\n                material_file = cmds.listConnections(f'{material}.color', type='file')\n            if material_file:\n                texture = cmds.getAttr(f'{material_file[0]}.fileTextureName')\n                materials[material] = texture\n    return materials\n\ndef dump_and_write():\n    dismiss, ui_values = create_ui_material_export()\n    if dismiss == 'Export':\n        map_name = ui_values['map_name']\n        materials_bin = ui_values['materials_bin']\n        if map_name == '' or materials_bin == '':\n            return\n        # dump materials in scene\n        materials = dump_materials()\n        # rename material to match bin file + set path of textures\n        materials = update_write_materials(materials, map_name)\n        # read, add materials to the end of entries\n        bin = pyRitoFile.bin.BIN().read(materials_bin)\n        parse_write_materials(materials, bin)\n        bin.write(materials_bin)\n        MGlobal.displayInfo(f'Finish: Dump {len(materials)} materials.')\n        \ndump_and_write()" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Check if scene material is not definied (missing) in materials.bin" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Check missing materials" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "CHK" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/check_materials.png" 
+        -image1 "lemon3d/check_materials.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\nimport os.path\nfrom LtMAO import lepath, pyRitoFile, Ritoddstex, hash_helper\n\ndef parse_read_materials(bin):\n    materials = {}\n    for entries in bin.entries:\n        if entries.type == hash_helper.Storage.bin_hashes['StaticMaterialDef']:\n            names = entries.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['name'])            \n            samplerValuess = entries.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['samplerValues'])\n            if len(names) > 0 and len(samplerValuess) > 0:\n                for StaticMaterialShaderSamplerDef in samplerValuess[0].data:\n                    textureNames = StaticMaterialShaderSamplerDef.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['textureName'])            \n                    texturePaths = StaticMaterialShaderSamplerDef.get_items(lambda field: field.hash == hash_helper.Storage.bin_hashes['texturePath'])\n                    if len(textureNames) > 0 and len(texturePaths) > 0:\n                        if textureNames[0].data in ('DiffuseTexture', 'Diffuse_Texture'):\n                            materials[names[0].data] = texturePaths[0].data\n    return materials\n\ndef update_read_materials(materials, wad_folder):\n    materials2 = {}\n    for material, texture in materials.items():\n        texture = lepath.join(wad_folder, texture)\n        # tex to dds \n        if texture.endswith('.tex') and os.path.exists(texture):\n            dds = texture.replace('.tex', '.dds')\n            Ritoddstex.tex2dds(texture, dds)\n            texture = dds\n        material = material.replace('/', '__')\n        materials2[material] = texture\n    return materials2\n\ndef dump_materials():\n    materials = {}\n    meshes=cmds.ls(sl=True, dag=True, s=True)\n    if meshes != None and len(meshes)>0:\n        scope=cmds.listConnections(meshes, type ='shadingEngine')\n    else:\n        scope=cmds.ls(type='shadingEngine')\n    if scope != None:\n        list_materials_in_scene = []\n        for shading_engine in scope:\n            if cmds.sets(shading_engine, q=True):\n                list_materials_in_scene += cmds.ls(cmds.listConnections(shading_engine), materials=True)\n        for material in list_materials_in_scene:\n            if material in materials:\n                continue\n            materials[material] = ''\n    return materials\n\ndef read_and_check():\n    materials_bin = cmds.fileDialog2(\n        dialogStyle=2, \n        fileMode=1,\n        fileFilter='BIN(*.bin)',\n        caption='Select Materials BIN',\n        okCaption='Check'\n    )\n    if materials_bin:\n        materials_bin = materials_bin[0].replace('\\\\', '/')\n        materials = parse_read_materials(pyRitoFile.bin.BIN().read(materials_bin))\n        materials = update_read_materials(materials, 'whateverthisvar')\n        materials_in_scene = dump_materials()\n\n        missing_materials = []\n        for material in materials_in_scene:\n            if material not in materials:\n                missing_materials.append(material)\n        \n        missing_materials_count = len(missing_materials)\n        if missing_materials_count > 0:\n            missing_materials_str = '\\n'.join(missing_materials)\n            MGlobal.displayInfo(f'Found {missing_materials_count} selected scene materials that are not defined in materials.bin:\\n{missing_materials_str}')\n        else:\n            MGlobal.displayInfo(f'All {len(materials_in_scene)} scene materials are defined in materials.bin')\n\nread_and_check()" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Open UV Editor." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "UV editor" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "UV" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/uv_editor.png" 
+        -image1 "lemon3d/uv_editor.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "TextureViewWindow" 
+        -sourceType "mel" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    separator
+        -enable 1
+        -width 34
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -style "shelf" 
+        -horizontal 0
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Generated lightmap UV on 2nd UV set of selected objects. (Overwrite if existed)" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Generate lightmap UV" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "UV" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/lightmap_uv_create.png" 
+        -image1 "lemon3d/lightmap_uv_create.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\ndef on_textfield(textfield):\n    cmds.optionVar(sv=('lemon3d_lightmapuv', cmds.textField(textfield, q=True, tx=True)))\n\n\nif cmds.window('LIGHTMAPUV', ex=True):\n    cmds.deleteUI('LIGHTMAPUV')\n\nwindow = cmds.window(\n    \"LIGHTMAPUV\", \n    title = 'Name of lightmap UV set:', \n    sizeable = False\n)\n\nlayout = cmds.rowLayout (p = window, nc = 2)\ntextfield = cmds.textField(p = layout, w = 500, h = 30)\nold_str = cmds.optionVar(q='lemon3d_lightmapuv')\nif old_str:\n    cmds.textField(textfield, e=True, it = old_str)\ncmds.textField(textfield, e = True, cc = lambda c: on_textfield(textfield))\ndef apply(*args):\n    lightmap = cmds.textField(textfield, q = True, tx=True)\n    if lightmap:\n        \n        # create second uv set and name it\n        selected = cmds.ls(sl = True)\n        for obj in selected: \n            uv_sets = cmds.polyUVSet(obj, query=True, allUVSets=True)\n            if len(uv_sets) > 1:\n                if uv_sets[1] != lightmap:\n                    cmds.polyUVSet(obj, rename=True, newUVSet=lightmap, uvSet=uv_sets[1])\n            else:\n                cmds.polyUVSet(obj, create=True, uvSet=lightmap)\n            cmds.polyUVSet(obj, copy=True, nuv=lightmap, uvSet=uv_sets[0])\n                \n        # layout the second uv set\n        cmds.polyMultiLayoutUV(\n            selected,\n            lm=1, sc=1, rbf=2, fr=1, ps=0.2, l=2, gu=1, gv=1, psc=0, su=1, sv=1, ou=0, ov=0,\n            uvs=lightmap\n        )\n        \n        MGlobal.displayInfo('Generated 2nd UV set for lightmap.')\n\ncmds.textField(textfield, edit = True, ec = apply)\ncmds.button('Apply', p = layout, w = 100, h = 30, c = apply)\n\ncmds.showWindow(window)" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Delete 2nd UV set of setlected meshes." 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Delete lightmap UV" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Del" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/lightmap_uv_remove.png" 
+        -image1 "lemon3d/lightmap_uv_remove.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\nselected = cmds.ls(sl = True)\nfor obj in selected: \n    uv_sets = cmds.polyUVSet(obj, query=True, allUVSets=True)\n    if len(uv_sets) > 1:\n        cmds.polyUVSet(obj, delete=True, uvSet=uv_sets[1])\nMGlobal.displayInfo('Deleted 2nd UV set of selected of selected objects.')\n" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+    shelfButton
+        -enableCommandRepeat 1
+        -flexibleWidthType 3
+        -flexibleWidthValue 32
+        -enable 1
+        -width 35
+        -height 34
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "Bake texture with arnold" 
+        -enableBackground 0
+        -backgroundColor 0 0 0 
+        -highlightColor 0.321569 0.521569 0.65098 
+        -align "center" 
+        -label "Bake Texture (Arnold)" 
+        -labelOffset 0
+        -rotation 0
+        -flipX 0
+        -flipY 0
+        -useAlpha 1
+        -font "plainLabelFont" 
+        -imageOverlayLabel "Bake" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 1 
+        -image "lemon3d/bake_textures.png" 
+        -image1 "lemon3d/bake_textures.png" 
+        -style "iconOnly" 
+        -marginWidth 0
+        -marginHeight 1
+        -command "from maya import cmds\nfrom maya.OpenMaya import MGlobal\n\ndef on_toggle(checkbox):\n    cmds.optionVar(sv=('lemon3d_bakediffuse', cmds.checkBox(checkbox, q=True, v=True)))\n\ndef on_optmenu(optmenu):\n    cmds.optionVar(sv=('lemon3d_bakequality', cmds.optionMenu(optmenu, q=True, v=True)))\n\ndef on_textfield(textfield):\n    cmds.optionVar(sv=('lemon3d_bakeres', cmds.textField(textfield, q=True, tx=True)))\n\ndef on_bakepath(bakepath):\n    cmds.optionVar(sv=('lemon3d_bakepath', cmds.textField(bakepath, q=True, tx=True)))\n\ndef browse_bakepath(bakepath):\n    result = cmds.fileDialog2(\n        ds = 2, fm = 3,\n        cap = 'Output location for baked textures',\n        okc = 'Select'\n    )[0]\n    cmds.textField(bakepath, e = True, tx=result)\n    cmds.optionVar(sv=('lemon3d_bakepath', cmds.textField(bakepath, q=True, tx=True)))\n\ndef bake(bakepath, checkbox, optmenu, textfield):\n    output = cmds.textField(bakepath, q=True, tx=True)\n    nodiffuse = cmds.checkBox(checkbox, q=True, v=True)\n    quality = cmds.optionMenu(optmenu, q=True, v=True)\n    aa = 2\n    if quality == 'Medium':\n        aa = 4\n    elif quality == 'High':\n        aa = 8\n    elif quality == 'Very High':\n        aa = 16\n    res = cmds.textField(textfield, q=True, tx=True)\n    try:\n        res = int(res)\n    except:\n        raise Exception('Bad resolution input, should be integer: 512, 1024, 2048,...')\n\n    selected = cmds.ls(sl = True)\n    if not selected:\n        raise Exception('Nothing selected.')\n\n    if nodiffuse:\n        if not cmds.objExists('standardSurface1'):\n            cmds.shadingNode('standardSurface', asShader=True, name='standardSurface1')\n        \n        # map objects by lightmap\n        map_obj = {}\n        for obj in selected:\n            uv_sets = cmds.polyUVSet(obj, query=True, allUVSets=True)\n            if not uv_sets:\n                raise Exception(f'{obj} doesnt have any UV data or not a mesh.')\n            if len(uv_sets) < 2:\n                raise Exception(f'{obj} doesnt have 2nd UV set.')\n            if uv_sets[1] not in map_obj:\n                map_obj[uv_sets[1]] = []\n            map_obj[uv_sets[1]].append(obj)\n        \n        for lightmap in map_obj:\n            cmds.select(cl = True)\n            \n            # hide original\n            cmds.hide(map_obj[lightmap])\n\n            # create a combined mesh\n            dupes = cmds.duplicate(map_obj[lightmap])\n            if len(dupes) > 1:\n                temp_mesh = cmds.polyUnite(\n                    dupes,\n                    ch=1,\n                    mergeUVSets=1,\n                    centerPivot=True,\n                    name=f'm_{lightmap}'\n                )[0]\n                cmds.DeleteAllHistory()\n            else:\n                temp_mesh = f'm_{lightmap}'\n                cmds.rename(dupes[0], temp_mesh)\n            cmds.polyUVSet(temp_mesh, rename=True, newUVSet='t_'+lightmap, uvSet=lightmap)\n            cmds.sets(temp_mesh, e=True, forceElement='initialShadingGroup')\n\n            # bake\n            cmds.arnoldRenderToTexture(\n                temp_mesh,\n                shader='standardSurface1', uv_set='t_'+lightmap,\n                folder=output, resolution=res, aa_samples=aa, filter='gaussian', filter_width=2.0,\n                extend_edges=False, u_start=0.0, v_start=0.0, u_scale=1.0, v_scale=1.0\n            )\n\n            # show original again\n            cmds.showHidden(map_obj[lightmap])\n\n            # delete combined mesh and rename baked texture\n            if output.endswith('/'):\n                output = output[:-1]\n            cmds.delete(temp_mesh)\n            cmds.sysFile(output + f'/{temp_mesh}Shape.exr', rename=output + '/' + lightmap + '.exr')\n\n    else:\n        # bake\n        cmds.arnoldRenderToTexture(\n            folder=output, resolution=res, aa_samples=aa, filter='gaussian', filter_width=2.0,\n            extend_edges=False, u_start=0.0, v_start=0.0, u_scale=1.0, v_scale=1.0\n        )\n        \n    MGlobal.displayInfo('Textures baked at ' + output)\n    cmds.select(selected)\n        \n    \n\ndef GUI():\n    if cmds.window('BAKELIGHT', ex=True):\n        cmds.deleteUI('BAKELIGHT')\n    window = cmds.window(\n        \"BAKELIGHT\", \n        title = 'Texture Baking', \n        sizeable = False\n    )\n    cmds.columnLayout()\n\n    cmds.rowLayout(nc = 3)\n    cmds.text(label = 'Output:', h = 30)\n\n    bakepath = cmds.textField(w = 500, h = 30)\n    old_path = cmds.optionVar(q='lemon3d_bakepath')\n    if old_path:\n        cmds.textField(bakepath, e=True, it = old_path)\n    cmds.textField(bakepath, e = True, cc = lambda c: on_bakepath(bakepath))\n    cmds.button('Browse', h = 30, c = lambda c: browse_bakepath(bakepath))\n    \n\n    cmds.setParent('..')\n    cmds.rowLayout(nc = 2)\n\n    checkbox = cmds.checkBox(label = 'No diffuse', h = 30, w = 200, v = True)\n    old_toggle = cmds.optionVar(q='lemon3d_bakediffuse')\n    if old_toggle != None:\n        cmds.checkBox(checkbox, e = True, v = (old_toggle == 'True'))\n    cmds.checkBox(checkbox, e = True, cc = lambda c: on_toggle(checkbox))\n    \n    optmenu = cmds.optionMenu(label='Quality:', h = 30)\n    cmds.menuItem(label='Low')\n    cmds.menuItem(label='Medium')\n    cmds.menuItem(label='High')\n    cmds.menuItem(label='Very High')\n    cmds.optionMenu(optmenu, e = True, v = 'Medium')\n    old_quality = cmds.optionVar(q='lemon3d_bakequality')\n    if old_quality:\n        cmds.optionMenu(optmenu, e = True, v = old_quality)\n    cmds.optionMenu(optmenu, e = True, cc = lambda c: on_optmenu(optmenu))\n\n    cmds.setParent('..')\n    cmds.rowLayout(nc = 4)\n    cmds.text(label = 'Resolution:', h = 30, w = 80)\n    textfield = cmds.textField(w = 80, h = 30)\n    old_res = cmds.optionVar(q='lemon3d_bakeres')\n    if old_res:\n        cmds.textField(textfield, e = True, it = old_res)\n    else:\n        cmds.textField(textfield, e = True, it = '1024')\n    cmds.textField(textfield, e = True, cc = lambda c: on_textfield(textfield))\n\n    cmds.text(label = '', w = 300)\n\n    cmds.button(\n        'Bake', w = 100, h = 30, align = 'right',\n        c = lambda x: bake(bakepath, checkbox, optmenu, textfield)\n    )\n    cmds.showWindow(window)\n\nGUI()" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -flat 1
+    ;
+
+} 

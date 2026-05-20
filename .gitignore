@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Build output
+out/
+
+# Runtime hash cache (downloaded on first run)
+pref/
+
+# Logs
+*.log
+
+# Sunshine-only builders (not part of this repo)
+build_emotes.py
+build_tft.py
+build_wards.py
+examples/
+_assets/
+
+# Editors / OS
+.venv/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
