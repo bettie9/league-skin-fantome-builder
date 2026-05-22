@@ -344,18 +344,102 @@ class SkinBuilder:
         print(f"    + {champ_key} skin{num} -> {out_path.name} ({out_path.stat().st_size}B)")
 
     def _patch_skin_bin(self, char_lower: str, skin_raw: bytes, num: int) -> bytes:
-        """Apply text-level transforms via ritobin_cli (round-trip lossless).
+        """Hybrid bin patcher.
 
-        Transforms:
-          1. SCDP entry name "Characters/<C>/Skins/Skin<N>" -> .../Skin0
-          2. ResourceResolver entry name -> .../Skin0/Resources
-          3. mResourceResolver link value -> .../Skin0/Resources
-          4. championSkinName "<C>Skin<N>" -> "<C>"
-          5. Gear-tier inline (mGearSkinUpgrades): pre-bake level-1 gear
-             VFX resources into the main ResourceResolver. Required for
-             Battle Queen Katarina, Pajama Guardian Lulu, etc.
-          6. Strip level-1 gear submeshes from initialSubmeshToHide.
+        Most skins go through the fast in-memory path (`_patch_via_pyritofile`):
+        ~50ms each, BIN.write is lossless on plain skins.
+
+        Gear-tier skins (Battle Queen Katarina, Pajama Guardian Lulu, etc.)
+        have `mGearSkinUpgrades` entries that pyRitoFile's BIN.write
+        truncates. Those go through `_patch_via_ritobin` for a byte-perfect
+        text-level round-trip plus the gear-resource inlining.
         """
+        skin_bin = self._read_bin_full(skin_raw)
+        if self._is_gear_tier(skin_bin):
+            return self._patch_via_ritobin(char_lower, skin_raw, num)
+        return self._patch_via_pyritofile(char_lower, skin_bin)
+
+    @staticmethod
+    def _is_gear_tier(skin_bin) -> bool:
+        """A skin is gear-tier if the bin contains any GearSkinUpgrade
+        top-level entry (Battle Queen Katarina, Pajama Guardian Lulu,
+        Battlecast Skarner, etc.)."""
+        from LtMAO.pyRitoFile.helper import FNV1a  # type: ignore
+        gear_type = f"{FNV1a('GearSkinUpgrade'):08x}"
+        for entry in skin_bin.entries or []:
+            if entry.type == gear_type:
+                return True
+        return False
+
+    @staticmethod
+    def _read_bin_full(data: bytes):
+        """Parse a raw bin via temp file (pyRitoFile needs a path)."""
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".bin") as tf:
+            tmp = tf.name
+            tf.write(data)
+        try:
+            return pyRitoFile.bin.BIN().read(tmp)
+        finally:
+            try:
+                os.unlink(tmp)
+            except OSError:
+                pass
+
+    @staticmethod
+    def _patch_via_pyritofile(char_lower: str, skin_bin) -> bytes:
+        """Fast path: in-memory transforms via pyRitoFile.
+        Lossless for non-gear-tier skins (the vast majority).
+
+        pyRitoFile stores entry.type and field.hash as 8-char lowercase
+        hex strings (FNV1a32). We compute the same form for our targets.
+        """
+        from LtMAO.pyRitoFile.helper import FNV1a  # type: ignore
+        char_cap = char_lower[:1].upper() + char_lower[1:]
+
+        scdp_type = f"{FNV1a('SkinCharacterDataProperties'):08x}"
+        rr_type   = f"{FNV1a('ResourceResolver'):08x}"
+        mrr_field = f"{FNV1a('mResourceResolver'):08x}"
+        # championSkinName field hash
+        skin_name_field = f"{FNV1a('championSkinName'):08x}"
+
+        skin0_scdp = f"{FNV1a(f'Characters/{char_cap}/Skins/Skin0'):08x}"
+        skin0_rr   = f"{FNV1a(f'Characters/{char_cap}/Skins/Skin0/Resources'):08x}"
+
+        scdp_entry = None
+        for entry in skin_bin.entries or []:
+            if entry.type == scdp_type:
+                entry.hash = skin0_scdp
+                scdp_entry = entry
+            elif entry.type == rr_type:
+                entry.hash = skin0_rr
+
+        if scdp_entry is None:
+            raise RuntimeError(f"{char_lower}: no SkinCharacterDataProperties")
+
+        for field in scdp_entry.data or []:
+            if field.hash == mrr_field:
+                # mResourceResolver is a link — pyRitoFile stores it as
+                # a hex string too.
+                field.data = skin0_rr
+            elif field.hash == skin_name_field:
+                if isinstance(field.data, str) and field.data.lower().startswith(char_lower + "skin"):
+                    field.data = field.data[:len(char_lower)]
+
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".bin") as tf:
+            tmp = tf.name
+        try:
+            skin_bin.write(tmp)
+            return Path(tmp).read_bytes()
+        finally:
+            try:
+                os.unlink(tmp)
+            except OSError:
+                pass
+
+    def _patch_via_ritobin(self, char_lower: str, skin_raw: bytes, num: int) -> bytes:
+        """Slow path: ritobin_cli round-trip + text transforms +
+        gear-resource inlining. Required for gear-tier skins where
+        pyRitoFile.BIN.write loses bytes."""
         ritobin = self._ritobin_cli_path()
         if ritobin is None:
             raise RuntimeError("ritobin_cli.exe not found in _vendor/")
@@ -375,7 +459,7 @@ class SkinBuilder:
 
             text = in_txt.read_text(encoding="utf-8")
 
-            # 1-3. SCDP / ResourceResolver / mResourceResolver renames
+            # SCDP / RR / mResourceResolver entry-name renames
             text = re.sub(
                 rf'("Characters/{re.escape(char_cap)}/Skins/Skin){num}(" = SkinCharacterDataProperties)',
                 r'\g<1>0\g<2>', text)
@@ -385,13 +469,10 @@ class SkinBuilder:
             text = re.sub(
                 rf'(mResourceResolver: link = "Characters/{re.escape(char_cap)}/Skins/Skin){num}(/Resources")',
                 r'\g<1>0\g<2>', text)
-
-            # 4. championSkinName
             text = re.sub(
                 rf'(championSkinName: string = ")\w+Skin{num}(")',
                 rf'\g<1>{char_cap}\g<2>', text)
 
-            # 5. Gear-tier inline + 6. submesh strip
             text = self._inline_gear_resources(text, char_cap, num)
 
             in_txt.write_text(text, encoding="utf-8")
